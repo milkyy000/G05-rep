@@ -21,3 +21,17 @@ body {
     background-color: #508C9B;
     color:#EEEEEE;
 }
+.nav-hover:hover{
+    background-color: #EEEEEE;
+}
+.nav-text{
+    color:white;
+    font-weight: bold;
+}
+.sidebar{
+    top:100px;
+    height: 100vh;
+}
+
+
+
