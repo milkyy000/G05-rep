@@ -11,4 +11,13 @@ body {
 .the-4th-color{
     color: #EEEEEE;
 }
- 
+.text-hover:hover{
+    color: #508C9B;
+}
+.text1 {
+    color: #201E43;
+}
+.box-hover:hover{
+    background-color: #508C9B;
+    color:#EEEEEE;
+}
