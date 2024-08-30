@@ -29,28 +29,17 @@
           </div>
           <!-- user name and mini desc container -->
           <div class="container-fluid d-flex flex-column w-50 w-100">
-            <div class="m-2 fs-1 d-flex j">User name
+            <div class="m-2 fs-1 d-flex j"><%= user.name %>
               <span class="ms-lg-auto ms-3"><a href="edit-profile.html" class="text-decoration-none">...</a></span>
             </div>
-            <div class="text-wrap mx-2">Mini desc
-              A dynamic online profile showcasing a passionate creative professional with expertise in graphic design,
-              web development, and content creation.</div>
+            <div class="text-wrap mx-2"><%= user.status %></div>
           </div>
         </div>
         <!-- "about" and main desc container -->
         <div class="container-fluid">
         <h1 class="m-3">About</h1>
-        <div class="mx-3">Main desc
-          I like to creep around my home and act like a goblin
-
-          I don’t know why but I just enjoy doing this. Maybe it’s my way of dealing with stress or something but I just
-          do it about once every week. Generally I’ll carry around a sack and creep around in a sort of crouch-walking
-          position making goblin noises, then I’ll walk around my house and pick up various different “trinkets” and put
-          them in my bag while saying stuff like “I’ll be having that” and laughing maniacally in my goblin voice
-          (“trinkets” can include anything from shit I find on the ground to cutlery or other utensils). The other day I
-          was talking with my neighbours and they mentioned hearing weird noises like what I wrote about and I was just
-          internally screaming the entire conversation. I’m 99% sure they don’t know it’s me but god that 1% chance is
-          seriously weighing on my mind.
+        <div class="mx-3">
+          <%= user.description %>
         </div>
       </div>
     </div>
