@@ -1,10 +1,18 @@
 const mongoose = require('mongoose');
-
-// Replace <yourusername> and <password> with your username and actual password for the mongodb atlas cluster
-mongoose.connect('mongodb+srv://BeNa:FSG5123-Admin@fsg5.myx06.mongodb.net/?retryWrites=true&w=majority&appName=FSG5')
-.then(() => console.log('Connected to MongoDB Atlas'))
-.catch((error) => console.log(error.message));
+const express = require('express');
 const app = express();
+const dbUrl = process.env.DATABASE;
+
+mongoose.connect(dbUrl, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  
+  const db = mongoose.connection;
+  db.on('error', console.error.bind(console, 'connection error:'));
+  db.once('open', () => {
+    console.log('Connected to the database');
+  });
 const Schema = mongoose.Schema;
 const userSchema = new Schema({
     userName: {type: String, require: true, unique: true},
@@ -14,4 +22,5 @@ const userSchema = new Schema({
 });
 
 const user = mongoose.model('user',userSchema);
-module.exports = user;
+app.set ('view engine','ejs');
+const test = document.getElementById('box1');

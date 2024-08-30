@@ -32,6 +32,12 @@ body {
     top:100px;
     height: 100vh;
 }
+.roboto{
+    font-family: 'Roboto';
+}
+.poppins{
+    font-family: 'Poppins';
+}
 
 
 
