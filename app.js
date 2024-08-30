@@ -7,7 +7,7 @@ const session = require('express-session');
 const app = express();
 
 app.use(session({
-    secret: process.env.SECRET, // Secret used for session encryption
+  secret: process.env.SECRET, // Secret used for session encryption
     resave: false,
     saveUninitialized: false, // Do not save uninitialized sessions
     cookie: {
