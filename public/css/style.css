@@ -1,0 +1,43 @@
+.the-3th-color{
+    background-color: #508C9B;
+}
+body {
+    background-color: #EEEEEE;
+    height: 200vh
+}
+.the-1st-color{
+    background-color: #134B70 ;
+}
+.the-4th-color{
+    color: #EEEEEE;
+}
+.text-hover:hover{
+    color: #508C9B;
+}
+.text1 {
+    color: #201E43;
+}
+.box-hover:hover{
+    background-color: #508C9B;
+    color:#EEEEEE;
+}
+.nav-hover:hover{
+    background-color: #EEEEEE;
+}
+.nav-text{
+    color:white;
+    font-weight: bold;
+}
+.sidebar{
+    top:100px;
+    height: 100vh;
+}
+.roboto{
+    font-family: 'Roboto';
+}
+.poppins{
+    font-family: 'Poppins';
+}
+
+
+
