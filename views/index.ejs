@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1>Welcome to the Forum</h1>
+    <% if (userId) { %>
+        <a href="/logout">Logout</a>
+        <a href="/post">Post a Thread</a>
+    <% } else { %>
+        <a href="/login">Login</a>
+    <% } %>
+    
+    <h2>Threads:</h2>
+    <% threads.forEach(thread => { %>
+        <div>
+            <h3><a href="/thread/<%= thread._id %>"><%= thread.title %></a></h3>
+            <p>Posted by: <%= thread.createdBy.username %></p>
+        </div>
+    <% }) %>
+</body>
+</html>

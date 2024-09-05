@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= thread.title %></title>
+</head>
+<body>
+    <h1><%= thread.title %></h1>
+    <p><%= thread.content %></p>
+    <p>Posted by: <%= thread.createdBy.username %></p>
+    <h2>Replies:</h2>
+    <% if (thread.replies.length > 0) { %>
+        <% thread.replies.forEach(reply => { %>
+            <div>
+                <p><%= reply.content %></p>
+                <p>Replied by: <%= reply.createdBy.username %></p>
+            </div>
+        <% }) %>
+    <% } else { %>
+        <p>No replies yet.</p>
+    <% } %>
+    <h2>Reply:</h2>
+    <form action="/reply/<%= thread._id %>" method="POST">
+        <textarea name="content" required></textarea>
+        <button type="submit">Reply</button>
+    </form>
+</body>
+</html>
