@@ -15,10 +15,10 @@ const userSchema = new mongoose.Schema({
     userName: {
         type: String
     },
-    thread: {
+    thread: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Thread'
-    }
+    }]
 });
 const User = mongoose.model('User',userSchema);
 
@@ -34,6 +34,11 @@ const threadSchema = new mongoose.Schema({
     },
     postContent: {
         type: String
+    },
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     }
 });
 const Thread = mongoose.model('Thread', threadSchema);
@@ -49,6 +54,10 @@ app.get('/', (req, res) => {
 app.get('/thread/new', (req, res) => {
     res.render('thread');
 });
+
+app.get('/login',(req,res)=>{
+    res.render('login');
+})
 
 
 
@@ -78,7 +87,21 @@ app.get('/thread/:id', (req, res) => {
         })
         .catch(error => res.status(500).send(error));
 });
+app.post('/Login', (req, res) => {
+    const { username } = req.body; // Extract username from request body
 
+    // Check if username exists
+    if (!username) {
+        return res.status(400).send('Username is required');
+    }
+
+    // Create a new User instance with the username
+    const newUser = new User({ userName: username });
+
+    newUser.save()
+        .then(() => res.redirect('/latest'))
+        .catch(error => res.status(500).send(`Error: ${error.message}`));
+});
 
 // Start server
 app.listen(3000, () => {
