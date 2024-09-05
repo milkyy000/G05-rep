@@ -38,6 +38,14 @@ body {
 .poppins{
     font-family: 'Poppins';
 }
-
-
-
+a {
+    text-decoration: none; 
+}
+.thread-hover {
+    transition: background-color 0.3s, color 0.3s; 
+}
+.thread-hover:hover {
+    background-color: #d1d1d1; 
+    color: #508C9B; 
+    text-decoration: underline; 
+}

@@ -6,11 +6,22 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
 // Connect to MongoDB
-mongoose.connect('mongodb+srv://BeNa:FSG5123-Admin@fsg5.myx06.mongodb.net/?retryWrites=true&w=majority&appName=FSG5')
+mongoose.connect('mongodb+srv://BeNa:FSG5123-Admin@fsg5.myx06.mongodb.net/database?retryWrites=true&w=majority&appName=FSG5')
     .then(() => console.log('Connected to MongoDB Atlas'))
     .catch((error) => console.log(error.message));
 
 // Define Thread schema and model
+const userSchema = new mongoose.Schema({
+    userName: {
+        type: String
+    },
+    thread: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Thread'
+    }
+});
+const User = mongoose.model('User',userSchema);
+
 const threadSchema = new mongoose.Schema({
     threadTitle: {
         type: String,
@@ -39,6 +50,8 @@ app.get('/thread/new', (req, res) => {
     res.render('thread');
 });
 
+
+
 app.post('/thread', (req, res) => {
     const { title, content } = req.body;
     const newThread = new Thread({ threadTitle: title, postContent: content });
@@ -52,6 +65,20 @@ app.get('/latest', (req, res) => {
         .then(threads => res.render('latest', { threads }))
         .catch(error => res.send(error));
 });
+
+app.get('/thread/:id', (req, res) => {
+    const threadId = req.params.id;
+    Thread.findById(threadId)
+        .then(thread => {
+            if (thread) {
+                res.render('thethread', { thread });
+            } else {
+                res.status(404).send('Thread not found');
+            }
+        })
+        .catch(error => res.status(500).send(error));
+});
+
 
 // Start server
 app.listen(3000, () => {
