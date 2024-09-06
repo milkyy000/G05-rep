@@ -6,8 +6,8 @@ mongoose.connect('mongodb+srv://BeNa:FSG5123-Admin@fsg5.myx06.mongodb.net/databa
     .then(async () => {
         console.log('Connected to MongoDB');
 
-        const username = 'testuser1';
-        const password = 'testpassword1'; 
+        const username = 'testuser2';
+        const password = 'testpassword2'; 
   
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = new User({

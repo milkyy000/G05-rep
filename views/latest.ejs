@@ -15,15 +15,20 @@
             <div>
                 <p><%= reply.content %></p>
                 <p>Replied by: <%= reply.createdBy.username %></p>
+                <button id="cmt">cmt</button>
             </div>
         <% }) %>
     <% } else { %>
         <p>No replies yet.</p>
     <% } %>
+
+    
     <h2>Reply:</h2>
     <form action="/reply/<%= thread._id %>" method="POST">
         <textarea name="content" required></textarea>
         <button type="submit">Reply</button>
     </form>
+   
+<script href="/public/script.js"></script>
 </body>
 </html>
