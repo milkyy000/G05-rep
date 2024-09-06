@@ -115,8 +115,6 @@ app.post('/reply/:id', isAuthenticated, async (req, res) => {
     }
 });
 
-
-
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });

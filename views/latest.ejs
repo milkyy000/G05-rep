@@ -4,31 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= thread.title %></title>
+    <style>
+        .reply-form {
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
     <h1><%= thread.title %></h1>
     <p><%= thread.content %></p>
     <p>Posted by: <%= thread.createdBy.username %></p>
-    <h2>Replies:</h2>
+  <form action="/reply/<%= thread._id %>" method="POST">
+        <textarea name="content" required></textarea>
+        <button type="submit">Reply</button>
+    </form>
     <% if (thread.replies.length > 0) { %>
         <% thread.replies.forEach(reply => { %>
             <div>
                 <p><%= reply.content %></p>
                 <p>Replied by: <%= reply.createdBy.username %></p>
-                <button id="cmt">cmt</button>
+                <button class="cmt-btn" data-reply-id="<%= reply._id %>">Reply</button>
             </div>
         <% }) %>
-    <% } else { %>
-        <p>No replies yet.</p>
     <% } %>
 
-    
-    <h2>Reply:</h2>
-    <form action="/reply/<%= thread._id %>" method="POST">
+    <form id="form-template" class="reply-form" action="" method="POST">
         <textarea name="content" required></textarea>
         <button type="submit">Reply</button>
     </form>
-   
-<script href="/public/script.js"></script>
+
+    <script>
+        document.querySelectorAll('.cmt-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const formTemplate = document.getElementById('form-template');
+                const parent = button.parentNode;
+                let form = parent.querySelector('.reply-form');
+
+                if (form) {
+                    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+                } else {
+                    form = formTemplate.cloneNode(true);
+                    form.style.display = 'block';
+                    form.id = '';
+
+                    if (button.hasAttribute('data-thread-id')) {
+                        form.action = `/reply/${button.getAttribute('data-thread-id')}`;
+                    } else if (button.hasAttribute('data-reply-id')) {
+                        form.action = `/reply-to-reply/${button.getAttribute('data-reply-id')}`;
+                    }
+
+                    parent.appendChild(form);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
