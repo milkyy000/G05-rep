@@ -9,24 +9,40 @@
             display: none;
             margin-top: 10px;
         }
+        .reply {
+            margin-left: 20px;
+          
+        }
     </style>
 </head>
 <body>
     <h1><%= thread.title %></h1>
     <p><%= thread.content %></p>
     <p>Posted by: <%= thread.createdBy.username %></p>
-  <form action="/reply/<%= thread._id %>" method="POST">
+    <form action="/reply/<%= thread._id %>" method="POST">
         <textarea name="content" required></textarea>
         <button type="submit">Reply</button>
     </form>
-    <% if (thread.replies.length > 0) { %>
-        <% thread.replies.forEach(reply => { %>
-            <div>
-                <p><%= reply.content %></p>
+
+    <% function renderReplies(replies) { %>
+        <% replies.forEach(reply => { %>
+            <div class="reply">
                 <p>Replied by: <%= reply.createdBy.username %></p>
+                <p><strong><%= thread.createdBy.username %></strong> <%= reply.content %></p>
                 <button class="cmt-btn" data-reply-id="<%= reply._id %>">Reply</button>
+                <% if (reply.replies && reply.replies.length > 0) { %>
+                    <div class="reply">
+                        <%= renderReplies(reply.replies) %>
+                    </div>
+                <% } %>
             </div>
         <% }) %>
+    <% } %>
+
+    <% if (thread.replies.length > 0) { %>
+        <div>
+            <%= renderReplies(thread.replies) %>
+        </div>
     <% } %>
 
     <form id="form-template" class="reply-form" action="" method="POST">
@@ -48,10 +64,10 @@
                     form.style.display = 'block';
                     form.id = '';
 
-                    if (button.hasAttribute('data-thread-id')) {
-                        form.action = `/reply/${button.getAttribute('data-thread-id')}`;
-                    } else if (button.hasAttribute('data-reply-id')) {
+                    if (button.hasAttribute('data-reply-id')) {
                         form.action = `/reply-to-reply/${button.getAttribute('data-reply-id')}`;
+                    } else {
+                        form.action = `/reply/${button.getAttribute('data-thread-id')}`;
                     }
 
                     parent.appendChild(form);

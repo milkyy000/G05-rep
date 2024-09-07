@@ -89,31 +89,75 @@ app.get('/thread/:id', async (req, res) => {
             .populate('createdBy')
             .populate({
                 path: 'replies',
-                populate: { path: 'createdBy' }
+                populate: [
+                    {
+                        path: 'createdBy',
+                        model: 'User'
+                    },
+                    {
+                        path: 'replies',
+                        populate: [
+                            {
+                                path: 'createdBy',
+                                model: 'User'
+                            }
+                        ]
+                    }
+                ]
             });
+
         res.render('latest', { thread });
     } catch (error) {
+        console.error(error); 
         res.status(500).send('Server Error');
     }
 });
 
-
 app.post('/reply/:id', isAuthenticated, async (req, res) => {
-    const { content } = req.body;
+    const { content, parentReplyId } = req.body;
     try {
         const newReply = new Reply({
             content,
             createdBy: req.session.userId,
-            thread: req.params.id
+            thread: req.params.id,
+            parentReply: parentReplyId || null
         });
 
         await newReply.save();
-        await Thread.findByIdAndUpdate(req.params.id, { $push: { replies: newReply._id } });
+
+        if (parentReplyId) {
+            await Reply.findByIdAndUpdate(parentReplyId, { $push: { replies: newReply._id } });
+        } else {
+            await Thread.findByIdAndUpdate(req.params.id, { $push: { replies: newReply._id } });
+        }
+
         res.redirect(`/thread/${req.params.id}`);
+    } catch (error) {
+        console.error(error); 
+        res.status(500).send('Server Error');
+    }
+});
+
+
+app.post('/reply-to-reply/:id', isAuthenticated, async (req, res) => {
+    const { content } = req.body;
+    try {
+        const parentReply = await Reply.findById(req.params.id);
+        const newReply = new Reply({
+            content,
+            createdBy: req.session.userId,
+            thread: parentReply.thread,
+            parentReply: parentReply._id
+        });
+
+        await newReply.save();
+        await Reply.findByIdAndUpdate(req.params.id, { $push: { replies: newReply._id } });
+        res.redirect(`/thread/${parentReply.thread}`);
     } catch (error) {
         res.status(500).send('Server Error');
     }
 });
+
 
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
