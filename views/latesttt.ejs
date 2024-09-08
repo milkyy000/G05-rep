@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thread</title>
+</head>
+<body>
+    <style>
+        .reply-form {
+            display: none;
+            margin-top: 10px;
+        }
+        .reply {
+            margin-left: 20px;
+          
+        }
+    </style>
+    <h1><%= thread.title %></h1>
+    <p>Posted by: <%= thread.createdBy.username %></p>
+    <p><%= thread.content %></p>
+
+    <h2>Replies</h2>
+    <ul>
+        <% thread.replies.forEach(reply => { %>
+            <li>
+                <p><%= reply.content %></p>
+                <p>Reply by: <%= reply.createdBy.username %></p>
+                <% if (reply.parentReply && reply.parentReply.createdBy) { %>
+                    <p>In reply to: <%= reply.parentReply.createdBy.username %></p>
+                <% } %>
+                <ul>
+                    <% reply.replies.forEach(subReply => { %>
+                        <li>
+                            <p><%= subReply.content %></p>
+                            <p>Reply by: <%= subReply.createdBy.username %></p>
+                            <% if (subReply.parentReply && subReply.parentReply.createdBy) { %>
+                                <p>In reply to: <%= subReply.parentReply.createdBy.username %></p>
+                            <% } %>
+                        </li>
+                    <% }) %>
+                </ul>
+            </li>
+        <% }) %>
+    </ul>
+
+    <form action="/reply/<%= thread._id %>" method="POST">
+        <textarea name="content" placeholder="Your reply" required></textarea>
+        <input type="hidden" name="parentReplyId" value="">
+        <input type="submit" value="Reply">
+    </form>
+
+   
+</body>
+</html>

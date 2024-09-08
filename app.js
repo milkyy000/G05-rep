@@ -95,11 +95,25 @@ app.get('/thread/:id', async (req, res) => {
                         model: 'User'
                     },
                     {
+                        path: 'parentReply',
+                        populate: {
+                            path: 'createdBy',
+                            model: 'User'
+                        }
+                    },
+                    {
                         path: 'replies',
                         populate: [
                             {
                                 path: 'createdBy',
                                 model: 'User'
+                            },
+                            {
+                                path: 'parentReply',
+                                populate: {
+                                    path: 'createdBy',
+                                    model: 'User'
+                                }
                             }
                         ]
                     }
@@ -109,9 +123,12 @@ app.get('/thread/:id', async (req, res) => {
         res.render('latest', { thread });
     } catch (error) {
         console.error(error); 
+        console.log(parentReplyId);
         res.status(500).send('Server Error');
     }
 });
+
+
 
 app.post('/reply/:id', isAuthenticated, async (req, res) => {
     const { content, parentReplyId } = req.body;
@@ -157,7 +174,6 @@ app.post('/reply-to-reply/:id', isAuthenticated, async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
-
 
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);

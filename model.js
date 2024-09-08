@@ -14,8 +14,8 @@ const threadSchema = new mongoose.Schema({
 
 const replySchema = new mongoose.Schema({
     content: { type: String, required: true },
-    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    thread: { type: mongoose.Schema.Types.ObjectId, ref: 'Thread' },
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    thread: { type: mongoose.Schema.Types.ObjectId, ref: 'Thread', required: true },
     parentReply: { type: mongoose.Schema.Types.ObjectId, ref: 'Reply', default: null },
     replies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Reply' }]
 });
