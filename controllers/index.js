@@ -288,4 +288,24 @@ exports.unlockUser = async (req,res) => {
 } catch(error){
     console.log(error);
 }
+};
+
+//Controller for rendering other user's(not session user)profile
+exports.getThreadUserProfile = async (req,res) => {
+    try{
+        const user = await User.findById(req.params.id);
+        const message = null;
+        const adminStatus = null;
+        res.render("threadUserProfile", { user, message, adminStatus});
+    }catch(error){
+        console.log(error);
+    }
+}
+
+exports.postThreadUserProfile = async (req, res) => {
+    try{
+        res.redirect('/getThreadUserProfile')
+    }catch(error){
+        console.log(error);
+    }
 }

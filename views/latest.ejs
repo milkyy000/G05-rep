@@ -20,39 +20,22 @@
 <body>
     <h1><%= thread.title %></h1>
     <p><%= thread.content %></p>
-    <p>Posted by: <%= thread.createdBy.name %></p>
+
+    <p>Posted by: <%= thread.createdBy.name %> + User id: <%= thread.createdBy._id %></p>
     <form action="/reply/<%= thread._id %>" method="POST">
         <textarea name="content" required></textarea>
         <button type="submit">Reply</button>
     </form>
 
-    <!-- <% function renderReplies(replies) { %>
-        <% replies.forEach(reply => { %>
-            <div class="reply">
-                <p>Replied by: <%= reply.createdBy.username %></p>
-                <p><strong><%= thread.createdBy.username %></strong> <%= reply.content %></p>
-                <button class="cmt-btn" data-reply-id="<%= reply._id %>">Reply</button>
-                <% if (reply.replies && reply.replies.length > 0) { %>
-                    <div class="reply">
-                        <%= renderReplies(reply.replies) %>
-                    </div>
-                <% } %>
-            </div>
-        <% }) %>
-    <% } %>
-
-    <% if (thread.replies.length > 0) { %>
-        <div>
-            <%= renderReplies(thread.replies) %>
-        </div>
-    <% } %> -->
     <% thread.replies.forEach(reply => { %>
         <div class="reply-<%= reply._id %> reply-to-thread">
+            <a href="/profile/<%=reply.createdBy._id %>"><img src="<%= reply.createdBy.photo %>"alt="User's image"></a>
             <p><%= reply.createdBy.name %>:</p>
             <p><%= reply.content %></p>
             <button class="cmt-btn" data-reply-id="<%= reply._id %>">Reply</button>
         </div>
         <% reply.replies.forEach(subReply => { %>
+
             <div class="reply-to-reply">
             <p><%= subReply.content %></p>
             <p>Reply by: <%= subReply.createdBy.name %></p>

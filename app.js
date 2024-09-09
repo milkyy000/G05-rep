@@ -180,7 +180,7 @@ app.post('/reply-to-reply/:id', isAuthenticated, async (req, res) => {
     }
 });
 //get controller functions from controllers index
-const { login, getLogin, getProfile, getProfileEditor, editProfile, editPfp, getAdminUI, lockUser, unlockUser} = require("./controllers/index");
+const { login, getLogin, getProfile, getProfileEditor, editProfile, editPfp, getAdminUI, lockUser, unlockUser, getThreadUserProfile, postThreadUserProfile} = require("./controllers/index");
 
 //Middlewares
 const handleFileUploadError = require("./middlewares/upload");
@@ -189,8 +189,6 @@ const isAdminCheck = require("./middlewares/isAdmin");
 app.get("/", getLogin);
 
 app.get("/profile", getProfile);
-
-app.post("/login", login);
 
 app.get('/profile_editor', getProfileEditor); 
 
@@ -203,6 +201,11 @@ app.get('/adminUI', isAdminCheck, getAdminUI);
 app.post('/user/:id/lock', lockUser);
 
 app.post('/user/:id/unlock', unlockUser);
+
+app.get("/profile/:id", getThreadUserProfile)
+
+app.post("", postThreadUserProfile);
+
 const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
