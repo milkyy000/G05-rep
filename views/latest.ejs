@@ -9,8 +9,11 @@
             display: none;
             margin-top: 10px;
         }
-        .reply {
+        .reply-to-thread {
             margin-left: 20px;
+        }
+        .reply-to-reply{
+            margin-left: 40px;
         }
     </style>
 </head>
@@ -23,7 +26,7 @@
         <button type="submit">Reply</button>
     </form>
 
-    <% function renderReplies(replies) { %>
+    <!-- <% function renderReplies(replies) { %>
         <% replies.forEach(reply => { %>
             <div class="reply">
                 <p>Replied by: <%= reply.createdBy.username %></p>
@@ -42,7 +45,27 @@
         <div>
             <%= renderReplies(thread.replies) %>
         </div>
-    <% } %>
+    <% } %> -->
+    <% thread.replies.forEach(reply => { %>
+        <div class="reply-<%= reply._id %> reply-to-thread">
+            <p><%= reply.createdBy.username %>:</p>
+            <p><%= reply.content %></p>
+            <button class="cmt-btn" data-reply-id="<%= reply._id %>">Reply</button>
+        </div>
+        <% reply.replies.forEach(subReply => { %>
+            <div class="reply-to-reply">
+            <p><%= subReply.content %></p>
+            <p>Reply by: <%= subReply.createdBy.username %></p>
+            <% if (subReply.parentReply && subReply.parentReply.createdBy) { %>
+                <p>In reply to: <%= subReply.parentReply.createdBy.username %></p>
+            <% } %>
+            <button class="cmt-btn" data-reply-id="<%= reply._id %>">Reply</button>
+            </div>
+        <% }) %>
+    <% }) %>
+    
+        
+
 
     <form id="form-template" class="reply-form" action="" method="POST">
         <textarea name="content" required></textarea>
