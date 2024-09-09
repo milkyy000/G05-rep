@@ -1,0 +1,16 @@
+img#photo.photo {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 0.5px solid #3846af;
+    cursor: pointer;
+    object-fit: cover;
+    margin: 15px auto;
+  }
+input#file.file {
+    position: absolute;
+    opacity: 0;
+}
+body{
+    background-color: #050a2e;
+}
