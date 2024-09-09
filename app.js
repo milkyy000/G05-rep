@@ -49,6 +49,7 @@ app.post('/login', async (req, res) => {
 
         if (user && await bcrypt.compare(password, user.password)) {
             req.session.userId = user._id;
+            req.session.user = user;
             res.redirect('/');
         } else {
             res.send('Invalid username or password');
@@ -174,44 +175,6 @@ app.post('/reply-to-reply/:id', isAuthenticated, async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
-
-app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-});
-const express = require('express');
-const path = require('path');
-require('dotenv').config()
-const mongoose = require("mongoose")
-const indexapp = require('./routes/index');
-const session = require('express-session');
-
-const app = express();
-
-app.use(session({
-  secret: process.env.SECRET, // Secret used for session encryption
-    resave: false,
-    saveUninitialized: false, // Do not save uninitialized sessions
-    cookie: {
-      maxAge: 60 * 60 * 1000, // Set session cookie expiration time (1 hour)
-    }
-}));
-
-//CONNECT DATABASE
-mongoose
-.connect(process.env.DATABASE)
-.then(() => console.log("DB connected"))
-.catch((err) => console.log(err));
-
-// Set up the template engine (EJS) and views directory
-const templatePath = path.join(__dirname, './views');
-app.use(express.json());
-app.set("view engine", "ejs");
-app.set("views", templatePath); 
-app.use(express.urlencoded({extended: true}));
-app.use(express.static("public")); // Serve static files from the "public" directory
-
-// Route for handling index
-
 //get controller functions from controllers index
 const { login, getLogin, getProfile, getProfileEditor, editProfile, editPfp, getAdminUI, lockUser, unlockUser} = require("./controllers/index");
 
@@ -219,7 +182,6 @@ const { login, getLogin, getProfile, getProfileEditor, editProfile, editPfp, get
 const handleFileUploadError = require("./middlewares/upload");
 const isAdminCheck = require("./middlewares/isAdmin");
 
-mongoose
 app.get("/", getLogin);
 
 app.get("/profile", getProfile);
@@ -238,12 +200,7 @@ app.post('/user/:id/lock', lockUser);
 
 app.post('/user/:id/unlock', unlockUser);
 
-// Set up port for the application
-const port = process.env.PORT || 8000;
-
-// Start the server and log a message when it's listening
-app.listen(port, () => {
-  console.log(`App listening on port http://localhost:${port}`);
+app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
 });
 
-module.exports = app;
