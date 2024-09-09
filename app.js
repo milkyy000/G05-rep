@@ -2,12 +2,13 @@ const express = require('express');
 const path = require('path');
 require('dotenv').config()
 const mongoose = require("mongoose")
-const indexRouter = require('./routes/index');
+const indexapp = require('./routes/index');
 const session = require('express-session');
+
 const app = express();
 
 app.use(session({
-    secret: process.env.SECRET, // Secret used for session encryption
+  secret: process.env.SECRET, // Secret used for session encryption
     resave: false,
     saveUninitialized: false, // Do not save uninitialized sessions
     cookie: {
@@ -30,7 +31,32 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.static("public")); // Serve static files from the "public" directory
 
 // Route for handling index
-app.use("/", indexRouter);
+
+//get controller functions from controllers index
+const { login, getLogin, getProfile, getProfileEditor, editProfile, editPfp, getAdminUI, lockUser, unlockUser} = require("./controllers/index");
+
+//Middlewares
+const handleFileUploadError = require("./middlewares/upload");
+const isAdminCheck = require("./middlewares/isAdmin");
+
+mongoose
+app.get("/", getLogin);
+
+app.get("/profile", getProfile);
+
+app.post("/login", login);
+
+app.get('/profile_editor', getProfileEditor); 
+
+app.post('/profile/edit', editProfile);
+
+app.post('/profilePic-edit', editPfp); 
+
+app.get('/adminUI', isAdminCheck, getAdminUI);
+
+app.post('/user/:id/lock', lockUser);
+
+app.post('/user/:id/unlock', unlockUser);
 
 // Set up port for the application
 const port = process.env.PORT || 8000;

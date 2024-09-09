@@ -2,17 +2,23 @@ const mongoose = require("mongoose");
 
 //Define user schema
 const userSchema = new mongoose.Schema({
+    isAdmin: {
+        type: Boolean
+    },
+    isLocked:{
+        type: Boolean
+    },
     name: {
         type: String,
         required: [true, 'Name is required']
-    },
-    pfp: {
-        type: String
     },
     status:{
         type: String,
     },
     description:{
+        type: String
+    },
+    photo: {
         type: String
     }
 })
