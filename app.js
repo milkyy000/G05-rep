@@ -3,12 +3,13 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
+require('dotenv').config();
 const { User, Thread, Reply } = require('./model');
 
 const app = express();
-const PORT = 3000;
-
-mongoose.connect('mongodb+srv://BeNa:FSG5123-Admin@fsg5.myx06.mongodb.net/database?retryWrites=true&w=majority&appName=FSG5', { useNewUrlParser: true, useUnifiedTopology: true })
+const db = process.env.DATABASE;
+console.log(db);
+mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Connected to MongoDB'))
     .catch(error => console.log(error));
 
@@ -21,13 +22,6 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
-
-function isAuthenticated(req, res, next) {
-    if (req.session.userId) {
-        return next();
-    }
-    res.redirect('/login');
-}
 
 app.get('/', async (req, res) => {
     try {
@@ -43,9 +37,11 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
-    const { username, password } = req.body;
+    const { name, password } = req.body;
+    console.log(req.body.password);
+    console.log(req.body.name);
     try {
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ name });
 
         if (user && await bcrypt.compare(password, user.password)) {
             req.session.userId = user._id;
@@ -59,10 +55,18 @@ app.post('/login', async (req, res) => {
     }
 });
 
+
 app.get('/logout', (req, res) => {
     req.session.destroy();
     res.redirect('/');
 });
+
+function isAuthenticated(req, res, next) {
+  if (req.session.userId) {
+      return next();
+  }
+  res.redirect('/login');
+}
 
 app.get('/post', isAuthenticated, (req, res) => {
     res.render('thread');
@@ -199,7 +203,7 @@ app.get('/adminUI', isAdminCheck, getAdminUI);
 app.post('/user/:id/lock', lockUser);
 
 app.post('/user/:id/unlock', unlockUser);
-
+const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });

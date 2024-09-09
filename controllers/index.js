@@ -81,7 +81,8 @@ exports.editProfile = async (req, res) => {
     
     const updates = Object.keys(req.body);
     console.log("Updates: " + updates);
-    console.log("Request body: " + req.body);
+    console.log("Request body: " + req.body.status);
+    console.log(req.body.description);
     const allowedUpdates = ['name', 'status', 'description'];
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
 
@@ -92,8 +93,36 @@ exports.editProfile = async (req, res) => {
 
     //Check if the username is taken before saving new username
     const newName = req.body.name;
-    if(newName === req.session.user.name){ //if the user havent changed anything in the username form and submit it will send them back to profile without changing anything
-        res.redirect('/profile');
+    const newStatus = req.body.status;
+    const newDescription = req.body.description;
+    if(    newName === req.session.user.name){ //if the user havent changed anything in the username form and submit it will send them back to profile without changing anything
+        console.log("didnt change")
+        try{
+            User.findByIdAndUpdate(req.session.user._id, {status: req.body.status, description: req.body.description}, {
+                new: true,
+                runValidators: true,
+            })
+                .then(editedUser => {
+                    if (!editedUser) {
+                        req.session.error = "Did not find the matching user id";
+                        return res.redirect('/profile');
+                    }
+                    console.log(req.session.status);
+                    console.log(req.session.description);
+                    req.session.user = editedUser;
+                    res.redirect('/profile');
+                })
+                .catch(error =>{
+                    req.session.error = 'Server error while updating profile';
+                    res.redirect('/profile_editor');
+                    console.log(error);
+                });
+        }
+        catch (error) {
+            req.session.error = "Server error while checking for username";
+            res.redirect('/profile');
+        }
+        
     }
     else {
         try {
@@ -112,6 +141,8 @@ exports.editProfile = async (req, res) => {
                         req.session.error = "Did not find the matching user id";
                         return res.redirect('/profile');
                     }
+                    console.log(req.session.status);
+                    console.log(req.session.description);
                     req.session.user = editedUser;
                     res.redirect('/profile');
                 })

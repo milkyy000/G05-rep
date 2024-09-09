@@ -14,12 +14,12 @@
     <% } else { %>
         <a href="/login">Login</a>
     <% } %>
-    
+    <a href="/profile">PROFILE</a>
     <h2>Threads:</h2>
     <% threads.forEach(thread => { %>
         <div>
             <h3><a href="/thread/<%= thread._id %>"><%= thread.title %></a></h3>
-            <p>Posted by: <%= thread.createdBy.username %></p>
+            <p>Posted by: <%= thread.createdBy.name %></p>
         </div>
     <% }) %>
 </body>

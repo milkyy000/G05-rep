@@ -1,8 +1,13 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    username: { type: String, required: true, unique: true },
-    password: { type: String, required: true }
+    name: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    isAdmin:  { type: Boolean, default: false},
+    isLocked: { type: Boolean},
+    status:   { type: String},
+    description:{type: String},
+    photo: { type: String, default: null}
 });
 
 const threadSchema = new mongoose.Schema({

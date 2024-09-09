@@ -6,13 +6,22 @@ mongoose.connect('mongodb+srv://BeNa:FSG5123-Admin@fsg5.myx06.mongodb.net/databa
     .then(async () => {
         console.log('Connected to MongoDB');
 
-        const username = 'testuser2';
-        const password = 'testpassword2'; 
-  
+        const name = 'testuser4';
+        const password = 'testpassword4'; 
+        const photo = null;
+        const status = "Locked user testing";
+        const description= "grrr i got locked";
+        const isLocked = false;
+        const isAdmin= true;
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = new User({
-            username,
-            password: hashedPassword
+            name,
+            password: hashedPassword,
+            photo,
+            status,
+            description,
+            isLocked,
+            isAdmin
         });
 
         await user.save();

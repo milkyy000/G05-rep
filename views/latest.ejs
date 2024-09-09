@@ -20,7 +20,7 @@
 <body>
     <h1><%= thread.title %></h1>
     <p><%= thread.content %></p>
-    <p>Posted by: <%= thread.createdBy.username %></p>
+    <p>Posted by: <%= thread.createdBy.name %></p>
     <form action="/reply/<%= thread._id %>" method="POST">
         <textarea name="content" required></textarea>
         <button type="submit">Reply</button>
@@ -48,16 +48,16 @@
     <% } %> -->
     <% thread.replies.forEach(reply => { %>
         <div class="reply-<%= reply._id %> reply-to-thread">
-            <p><%= reply.createdBy.username %>:</p>
+            <p><%= reply.createdBy.name %>:</p>
             <p><%= reply.content %></p>
             <button class="cmt-btn" data-reply-id="<%= reply._id %>">Reply</button>
         </div>
         <% reply.replies.forEach(subReply => { %>
             <div class="reply-to-reply">
             <p><%= subReply.content %></p>
-            <p>Reply by: <%= subReply.createdBy.username %></p>
+            <p>Reply by: <%= subReply.createdBy.name %></p>
             <% if (subReply.parentReply && subReply.parentReply.createdBy) { %>
-                <p>In reply to: <%= subReply.parentReply.createdBy.username %></p>
+                <p>In reply to: <%= subReply.parentReply.createdBy.name %></p>
             <% } %>
             <button class="cmt-btn" data-reply-id="<%= reply._id %>">Reply</button>
             </div>
