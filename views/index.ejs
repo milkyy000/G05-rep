@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User view</title>
+</head>
+<body>
+    <%- include('partials/header.ejs')%>
+    Hii
+    <form action="/search" method="post"></form>
+        <label for="name">Find</label>
+        <input type="text" name="query" id="query">
+        <button type="submit">Submit</button>
+    </form>
+    <form action="/create/user" method="post">
+        <label for="name">Username</label>
+        <input type="text" name="name" id="name">
+        <button type="submit">Submit</button>
+    </form>
+    <%= foundUser.name %>
+</body> 
+</html>
