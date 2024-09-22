@@ -8,16 +8,32 @@
 <body>
     <%- include('partials/header.ejs')%>
     Hii
-    <form action="/search" method="post"></form>
+    <form action="/search" method="get">
         <label for="name">Find</label>
         <input type="text" name="query" id="query">
         <button type="submit">Submit</button>
     </form>
-    <form action="/create/user" method="post">
-        <label for="name">Username</label>
-        <input type="text" name="name" id="name">
+    <br>
+    Login
+    <form action="/login" method="post">
+        <label for="name">Username</label><br>
+        <input type="text" name="name" id="name"><br>
+        <label for="password">Password</label><br>
+        <input type="password" name="password" id="password"><br>
+        <label for="remember">Remember me</label>
+        <input type="checkbox" name="remember" id="remember"><br>
         <button type="submit">Submit</button>
     </form>
-    <%= foundUser.name %>
+<br>
+
+    Create user
+    <form action="/create/user" method="post">
+        <label for="name">Username</label><br>
+        <input type="text" name="name" id="name"><br>
+        <label for="password">Password</label><br>
+        <input type="password" name="password" id="password"><br>
+        <button type="submit">Submit</button>
+    </form>
+    
 </body> 
 </html>

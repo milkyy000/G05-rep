@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <%- include ('partials/header.ejs') %>
+    <h1>Content</h1>
+    Logined user: <%= sessionUser.name %>, id: <%= sessionUser._id %>
+
+    <% foundUser.forEach(user =>{ %>
+        Username: <%= user.name %> <br>
+        User mouses: <br>
+        <% user.mouse.forEach(mouse => { %>
+            <%= mouse.model %>
+            <img src="<%= mouse.image %>" alt="mouse picture">
+            <form action="/delete/<%= mouse._id %>/<%= user.id %>" method="post"><button type="submit">Delete</button></form>
+        <%})%>
+            <br>
+        <form action="/addMouse/<%= user.id %>" method="post" enctype="multipart/form-data">
+            <input type="text" name="model" id="model">
+            <input type="file" name="img" id="img">
+            <button type="submit">Submit</button>
+        </form>
+    <% }) %>
+</body>
+</html>
